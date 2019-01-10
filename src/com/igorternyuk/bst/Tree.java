@@ -19,8 +19,8 @@ public interface Tree<T> {
     public T getMax();
     public T getMin();
     public void traverse(Consumer<T> visitFunc);
-    public void preorder(Node<T> root, Consumer<T> work);
-    public void inorder(Node<T> root, Consumer<T> work);
-    public void postorder(Node<T> root, Consumer<T> work);
+    public void preorderTraversal(Node<T> root, Consumer<T> work);
+    public void inorderTraversal(Node<T> root, Consumer<T> work);
+    public void postorderTraversal(Node<T> root, Consumer<T> work);
     public void print();
 }

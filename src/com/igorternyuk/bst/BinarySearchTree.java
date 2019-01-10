@@ -76,7 +76,49 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
 
     @Override
     public void remove(T data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        delete(this.root, data);
+    }
+    
+    private Node<T> delete(Node<T> node, T data){
+        if(node == null){
+            return node;
+        }
+        
+        if(data.compareTo(node.getData()) > 0){
+            node.setRightChild(delete(node.getRightChild(), data));
+        } else if(data.compareTo(node.getData()) < 0){
+            node.setLeftChild(delete(node.getLeftChild(), data));
+        } else {
+            // The node to remove is a leaf node
+            if(!node.hasLeftChild() && !node.hasRightChild()){
+                System.out.println("Removing leaf node...");
+                return null;
+            }
+            
+            //The node we would like to remove has one child
+            if(node.hasLeftChild() ^ node.hasRightChild()){
+                System.out.println("Removing the node with a single child...");
+                return node.hasLeftChild() ? node.getLeftChild() : node.getRightChild();
+            }
+            
+            //The node we are going to remove has both children
+            //We are going to find max element in the left subtree
+            System.out.println("Removing the node with both children...");
+            Node<T> predecessor = getPredecessor(node.getLeftChild());
+            node.setData(predecessor.getData());
+            node.setLeftChild(delete(node.getLeftChild(), predecessor.getData()));            
+        }
+        return node;
+    }
+    
+    private Node<T> getPredecessor(Node<T> node){
+        if(node == null){
+            return node;
+        }
+        while(node.hasRightChild()){
+            node = node.getRightChild();
+        }
+        return node;
     }
     
     private int countNodes(Node<T> root){
@@ -168,32 +210,32 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
 
  
     @Override
-    public void preorder(Node<T> root, Consumer<T> work) {
+    public void preorderTraversal(Node<T> root, Consumer<T> work) {
         if(root == null){
             return;
         }
         work.accept(root.getData());
-        preorder(root.getLeftChild(), work);
-        preorder(root.getRightChild(), work);
+        preorderTraversal(root.getLeftChild(), work);
+        preorderTraversal(root.getRightChild(), work);
     }
 
     @Override
-    public void inorder(Node<T> root, Consumer<T> work) {
+    public void inorderTraversal(Node<T> root, Consumer<T> work) {
         if(root == null){
             return;
         }
-        inorder(root.getLeftChild(), work);
+        inorderTraversal(root.getLeftChild(), work);
         work.accept(root.getData());
-        inorder(root.getRightChild(), work);
+        inorderTraversal(root.getRightChild(), work);
     }
 
     @Override
-    public void postorder(Node<T> root, Consumer<T> work) {
+    public void postorderTraversal(Node<T> root, Consumer<T> work) {
         if(root == null){
             return;
         }
-        postorder(root.getLeftChild(), work);
-        postorder(root.getRightChild(), work);
+        postorderTraversal(root.getLeftChild(), work);
+        postorderTraversal(root.getRightChild(), work);
         work.accept(root.getData());
     }
 
