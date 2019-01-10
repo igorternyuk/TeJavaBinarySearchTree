@@ -43,6 +43,14 @@ public class Node<T> {
         this.rightChild = rightChild;
     }
     
+    public boolean hasLeftChild(){
+        return this.leftChild != null;
+    }
+    
+    public boolean hasRightChild(){
+        return this.rightChild != null;
+    }
+    
     @Override
     public String toString() {
         return data.toString();
